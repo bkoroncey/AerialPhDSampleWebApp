@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+	<title>robots.yourthing.com</title>
+	<!--
+	Idea is a place where people can post some info about their thing. Maybe keep it simple - some text and a picture.
+	Newer stuff is on top. 
+	Filter by tags.
+	Zombie walks wish they could advertise their walk.
+	Robot competitions want to post their thing. 
+	Maybe allow comments, more info on the 'more detail' page.
+	-->
+	<style type="text/css">
+		body{
+			background-color:#fff;
+		}
+		.post_preview{
+			float:left;
+			margin-left:20px;			
+		}
+		.post_preview > h3{
+			text-align:center;
+		}
+		.post{
+			display:inline-block;
+			width:300px;
+			height:500px;
+			border:1px solid black;
+			margin:10px;
+			padding:10px;	
+			position:relative;
+		}
+		.post div.image{
+			margin:0;
+			text-align:center;
+			height:300px;
+		}
+		.post img{
+			max-width:300px;
+			max-height:300px;			
+		}		
+		.post div.info{
+			background-color:#ddd;
+			height:7em;
+			padding:10px;
+		}
+		.post div.user{
+			border-top:1px dashed #777;
+			background-color:#ddd;
+			height:2em;
+			padding:.2em;
+		}
+		.post div.timestamp{
+			border-top:1px dashed #777;
+			background-color:#ddd;
+			height:1em;
+			padding:.2em;
+		}
+		.controls{
+			float:right;
+			padding:10px;
+			margin:10px;
+		}
+		.post_control_container{
+			position:absolute;
+			top:10px;
+			left:10px;
+		}
+		.post-control div{
+			display:inline-block;
+		}
+		.post_control_icon{
+			width:16px;
+			height:16px;
+			margin:0 4px 0 4px;
+			display:inline-block;
+		}
+		.post_control_icon>img{
+			max-width:16px;
+			max-height:16px;
+		}
+		.user_avatar{
+			width:32px;
+			max-height:32px;
+		}
+	</style>
+	<body>
+		
+		<form class="post_preview" method="post" action="news">
+			<h3>Create Your News</h3>
+			<div class="post">
+				<div>Website URL<br/>
+					<input type="text" id="url" name="url" onkeyup="var a = document.getElementById('preview_url'); a.href = this.value; a.innerText = this.value;"/>
+					<button onclick="var ni = document.getElementById('url');fetchImages(ni.value);return false;">Fetch Image</button>
+					<!-- May need Headless Browser to get images that come after ajax calls ... how duz Pinterest do it? -->
+				</div>
+				<div>Single Image URL<br/>
+					<input type="text" id="image" name="image"/>
+					<button onclick="var i = document.getElementById('preview_img');var ni = document.getElementById('image');i.src = ni.value;return false;">Fetch Image</button>
+				</div>
+				<div>Description<br/>
+					<input type="text" name="desc" onkeyup="document.getElementById('preview_desc').innerText = this.value;"/>
+				</div>
+				 <div class="info">Current User<br/>
+					<br/>
+					<a href="./moredetail.php">
+						<a target="_blank" href="./user/312456">
+					<img class="user_avatar" src="http://orig05.deviantart.net/46d6/f/2012/167/7/8/anime_avatar_by_spogjem-d53nmo2.png"/>
+					Noam Chompsky</a>
+				</div>
+				<button onclick="alert('Save');return false;">Save for later</button>
+				<button type="submit">Publish</button>
+			</div>
+		</form>
+		<div class="post_preview">
+			<h3>Preview Your News</h3>
+			<div class="post" id="preview">
+				<div class="image">
+					<img id="preview_img" src="http://www.cooltanarts.org.uk/wp-content/uploads/2013/10/robot.jpg"/>
+				 </div>
+				 <div class="info"><div id="preview_desc">My Post 1</div>
+					<a id="preview_url" target="_blank" href="./moredetail.php">More Detail</a>
+				</div>
+				<div class="timestamp">April 18, 2017 3:55pm EST</div>
+				 <div class="user">
+					<a id="preview_user_url" target="_blank" href="./user/312456">
+					<img class="user_avatar" src="http://orig05.deviantart.net/46d6/f/2012/167/7/8/anime_avatar_by_spogjem-d53nmo2.png"/>
+					Noam Chompsky</a>
+				</div>
+			</div>
+		</div>
+		<div class="post_preview">
+			<h3>Publish Your News</h3>
+			<div class="post">
+				<div>
+					<button>Save for Later</button>
+				</div>
+				<div>
+					<button>Publish</button>
+				</div>
+			</div>
+		</div>
+		<div class="post_preview">
+			<h3>Select Image</h3>
+			<div id="image_selection" class="post">
+				
+			</div>
+		</div>
+		<div id="post_control_container" class="post_control_container" style="display:none">
+			<div class="post_control_icon">
+				<img src="./images/box.png"/>
+			</div>
+			<div class="post_control_icon">
+				<img src="./images/paintbrush.png"/>
+			</div>
+			<div class="post_control_icon">
+				<img src="./images/expand.png"/>
+			</div>
+		</div>
+		<!-- TODO: Change to React -->
+		<script
+		  src="https://code.jquery.com/jquery-3.2.1.min.js"
+		  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+		  crossorigin="anonymous"></script>
+		  <script>
+			function fetchImages(url){
+			
+				var href = "image_search?url=" + url;
+			
+			  var jqxhr = $.ajax( href )
+				  .done(function(r) {
+					//alert( "success" );
+					console.log(r);
+					setImages(r);
+				  })
+				  .fail(function() {
+					alert( "error" );
+				  })
+				  .always(function() {
+					//alert( "complete" );
+				  });
+			  }
+			  function setImages(config)
+			  {
+				
+				var is = $('#image_selection');
+				is.html("");
+				for(var i = 0; i < config.images.length; i++){
+					var path = config.images[i].replace("\\","/");
+					if(!/^http/.test(path))path = config.phost + (/^\//.test(path)?"":"/") + path;
+					is.append("<img src='" + path + "'/>");
+				}
+				//$(config.images).each(function(i){ console.log(i);console.log(this); });//is.append("img",[src:]);
+			  }
+			  </script>
+		<script>
+			/*
+			var post_control_container = document.getElementById("post_control_container");
+			var posts= document.getElementsByClassName("post");
+			for(var i = 0; i < posts.length; i++)
+			{
+				var post = posts[i];
+				post.addEventListener("mouseenter",post_mouseenter);
+				post.addEventListener("mouseleave",post_mouseleave);
+			}
+			//TODO: Just attach once at BODY level ... so if new elements are added to page they will work with event
+			function post_mouseenter(){
+					this.appendChild(post_control_container);
+					post_control_container.style.display = "";
+					}
+			function post_mouseleave(){
+					post_control_container.style.display = "none";
+					document.body.appendChild(post_control_container);
+					}
+			*/
+		</script>
+	</body>
+</html>

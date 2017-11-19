@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+	<title>robots.yourthing.com</title>
+	<!--
+	Idea is a place where people can post some info about their thing. Maybe keep it simple - some text and a picture.
+	Newer stuff is on top. 
+	Filter by tags.
+	Zombie walks wish they could advertise their walk.
+	Robot competitions want to post their thing. 
+	Maybe allow comments, more info on the 'more detail' page.
+	-->
+	<style type="text/css">
+		body{
+			background-color:#fff;
+		}
+		.post{
+			display:inline-block;
+			width:300px;
+			height:500px;
+			border:1px solid black;
+			margin:10px;
+			padding:10px;	
+			position:relative;
+		}
+		.post div.image{
+			margin:0;
+			text-align:center;
+			height:300px;
+		}
+		.post img{
+			max-width:300px;
+			max-height:300px;			
+		}		
+		.post div.info{
+			background-color:#ddd;
+			height:180px;
+			padding:10px;
+		}
+		.controls{
+			float:right;
+			padding:10px;
+			margin:10px;
+		}
+		.post_control_container{
+			position:absolute;
+			top:10px;
+			left:10px;
+		}
+		.post-control div{
+			display:inline-block;
+		}
+		.post_control_icon{
+			width:16px;
+			height:16px;
+			margin:0 4px 0 4px;
+			display:inline-block;
+		}
+		.post_control_icon>img{
+			max-width:16px;
+			max-height:16px;
+		}
+	</style>
+	<body>
+		<div class="controls"><button onclick="window.location = './controls.php'">Controls</button></div>
+		<div class="post">
+			<div class="image">
+				<img src="http://www.cooltanarts.org.uk/wp-content/uploads/2013/10/robot.jpg"/>
+			 </div>
+			 <div class="info">My Post 1<br/>
+				<br/>
+				<a href="./moredetail.php">More Detail</a>
+			</div>
+		</div>
+		<div class="post">
+			<div class="image">
+				<img src="http://www.cooltanarts.org.uk/wp-content/uploads/2013/10/robot.jpg"/>
+			 </div>
+			 <div class="info">My Post 2<br/>
+				<br/>
+				<a href="./moredetail.php">More Detail</a>
+			</div>
+		</div>
+		<div class="post">
+			<div class="image">
+				<img src="https://images-na.ssl-images-amazon.com/images/I/41PE3fiDw%2BL._SX355_.jpg"/>
+			 </div>
+			 <div class="info">My Post 3<br/>
+				<br/>
+				<a href="./moredetail.php">More Detail</a>
+			</div>
+		</div>
+		<div class="post">
+			<div class="image">
+				<img src="http://www.robotshop.com/blog/en/files/sphero-star-wars-bb-8-bluetooth-smartphone-controlled-robotic-ball.jpg"/>
+			 </div>
+			 <div class="info">My Post 4<br/>
+				<br/>
+				<a href="./moredetail.php">More Detail</a>
+			</div>
+		</div>
+		<div class="post">
+			<div class="image">
+				<!-- <img src="https://images-na.ssl-images-amazon.com/images/I/41PE3fiDw%2BL._SX355_.jpg"/> -->
+			 </div>
+			 <div class="info">My Post 5<br/>
+				<br/>
+				<a href="./moredetail.php">More Detail</a>
+			</div>
+		</div>
+		<div class="post">
+			<div class="image">
+				<img src="https://images-na.ssl-images-amazon.com/images/I/41PE3fiDw%2BL._SX355_.jpg"/>
+			 </div>
+			 <div class="info">My Post <br/>
+				<br/>
+				<a href="./moredetail.php">More Detail</a>
+			</div>
+		</div>
+		<div class="post">
+			<div class="image">
+				<img src="https://images-na.ssl-images-amazon.com/images/I/41PE3fiDw%2BL._SX355_.jpg"/>
+			 </div>
+			 <div class="info">My Post <br/>
+				<br/>
+				<a href="./moredetail.php">More Detail</a>
+			</div>
+		</div>
+		<div class="post">
+			<div class="image">
+				<img src="http://www.robotshop.com/blog/en/files/sphero-star-wars-bb-8-bluetooth-smartphone-controlled-robotic-ball.jpg"/>
+			 </div>
+			 <div class="info">My Post <br/>
+				<br/>
+				<a href="./moredetail.php">More Detail</a>
+			</div>
+		</div>
+		<div class="post">
+			<div class="image">
+				<img src="https://images-na.ssl-images-amazon.com/images/I/41PE3fiDw%2BL._SX355_.jpg"/>
+			 </div>
+			 <div class="info">My Post <br/>
+				<br/>
+				<a href="./moredetail.php">More Detail</a>
+			</div>
+		</div>
+		<div class="post">
+			<div class="image">
+				<img src="https://images-na.ssl-images-amazon.com/images/I/41PE3fiDw%2BL._SX355_.jpg"/>
+			 </div>
+			 <div class="info">My Post <br/>
+				<br/>
+				<a href="./moredetail.php">More Detail</a>
+			</div>
+		</div>
+		<div id="post_control_container" class="post_control_container" style="display:none">
+			<div class="post_control_icon">
+				<img src="./images/box.png"/>
+			</div>
+			<div class="post_control_icon">
+				<img src="./images/paintbrush.png"/>
+			</div>
+			<div class="post_control_icon">
+				<img src="./images/expand.png"/>
+			</div>
+		</div>
+		<!-- TODO: Change to React -->
+		<script>
+			//document.body.addEventListener("mouseover",function(e){console.log(e);});
+			var post_control_container = document.getElementById("post_control_container");
+			var posts= document.getElementsByClassName("post");
+			for(var i = 0; i < posts.length; i++)
+			{
+				var post = posts[i];
+				post.addEventListener("mouseenter",post_mouseenter);
+				post.addEventListener("mouseleave",post_mouseleave);
+			}
+			//TODO: Just attach once at BODY level ... so if new elements are added to page they will work with event
+			function post_mouseenter(){
+					this.appendChild(post_control_container);
+					post_control_container.style.display = "";
+					}
+			function post_mouseleave(){
+					post_control_container.style.display = "none";
+					document.body.appendChild(post_control_container);
+					}
+		</script>
+	</body>
+</html>
