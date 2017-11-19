@@ -38,7 +38,8 @@ function handleError(res, reason, message, code) {
 //Spawn workers - handle more concurrent connections with cluster
 if(cluster.isMaster) {
     var numWorkers = require('os').cpus().length;
-
+	numWorkers = 1; //
+	
     console.log('Master cluster setting up ' + numWorkers + ' workers...');
 
     for(var i = 0; i < numWorkers; i++) {
